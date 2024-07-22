@@ -67,6 +67,13 @@ When you have removed all data you wish from analysis, click `Done` and the func
 rawdata <- plot_rawdata(rawdata)
 ```
 
+
+Static plot of on/off kinetics
+```{r}
+ook_plot(rawdata)
+```
+
+
 Run asymptotic models and get steady state values. 
 ```{r}
 models <- analysis(rawdata)
@@ -82,8 +89,6 @@ View regression coefficients.
 models$coefs
 ```
 
-```{r}
 
-```
 
 

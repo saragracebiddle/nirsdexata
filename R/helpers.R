@@ -126,8 +126,6 @@ select_types <- function(data, type = NULL){
 #' @param col_types character vector of column types
 #' @param col_names character vector of column names
 #' @param type type of signal to display on the graph. Defaults to NULL and displays all types.
-#' @param xlim
-#' @param ylim
 #'
 #' @return plotdata
 prepare_shiny_plot <- function(data,
@@ -138,11 +136,9 @@ prepare_shiny_plot <- function(data,
                                removed,
                                col_types,
                                col_names,
-                               type = NULL,
-                               xlim = NULL,
-                               ylim = NULL){
+                               type = NULL){
 
-  data = data |>
+ data |>
     remove_bad(bads = bads) |>
     adjust_times(sfreq = sfreq, meas_start = meas_start, samp_num = samp_num) |>
     crop(meas_start = meas_start, meas_end = meas_end) |>
@@ -154,16 +150,6 @@ prepare_shiny_plot <- function(data,
                      col_names = col_names) |>
     select_types(type = type)
 
-  if(is.null(xlim) &is.null(ylim)){
-    return(data)
-  }
-  data |>
-    dplyr::filter(
-      ZeroedTime > xlim[1] & ZeroedTime < xlim[2]
-    ) |>
-    dplyr::filter(
-      value > ylim[1] & value < ylim[1]
-    )
 }
 
 

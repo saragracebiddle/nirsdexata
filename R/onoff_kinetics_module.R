@@ -75,9 +75,7 @@ plot_rawdata <- function(rawdata){
           removed = vals$removed,
           col_types = vals$col_types,
           col_names = vals$col_names,
-          type = vals$type,
-          xlim = ranges$x,
-          ylim = ranges$y
+          type = vals$type
         )
 
     })
@@ -117,12 +115,10 @@ plot_rawdata <- function(rawdata){
     observeEvent(input$remove, {
       brushed <- input$brush
       brsh <- brushedPoints(plotdata(),
-                            input$brush,
-                            xvar = "ZeroedTime",
-                            yvar = "value")
+                            input$brush)
 
       new <- unique(brsh$samp_num)
-      print(new)
+      print(brsh)
       vals$removed = union(vals$removed, new)
 
     })

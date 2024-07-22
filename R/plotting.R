@@ -10,62 +10,10 @@
 ook_plot <- function(rawdata, type = NULL){
   # TODO stop if not object of class rawdata
 
-  info <- rawdata[["info"]]
-  data <- rawdata[["data"]]
+    plotdata <- prepare_for_ook_plot(rawdata, type = NULL)
+    # TODO add title?
+    ggook(plotdata, x =NULL,y = NULL)
 
-  # create lookup table
-  # for creating new variable col_type
-  # from col_name using rawdata$info$cols
-  lookup <- rawdata$info$cols$col_type |>
-    stringr::str_to_upper()
-  names(lookup) <- rawdata$info$cols$col_name
-
-  # crop by bounds
-  # and remove rows with samp_num in rawdata$info$bounds$remove
-  # add in time and zeroed time columns
-  # and melt to longer format
-  plotdata<- data[-info$bounds$removed, setdiff(c(info$cols$col_name, "samp_num"), info$bads)] |>
-    dplyr::mutate(Time = samp_num / info$sfreq,
-                  ZeroedTime = Time - info$bounds$meas_start) |>
-    dplyr::filter(ZeroedTime >= 0 & Time <= info$bounds$meas_end) |>
-    tidyr::pivot_longer(cols = setdiff(info$cols$col_name, info$bads),
-                        names_to = "col_name",
-                        values_to = "value")|>
-    dplyr::mutate(col_type = unname(lookup[plotdata$col_name]))
-
-  # if type is not null
-  # filter by types listed in type
-  if(!is.null(type)){
-    if(length(type) == 1){type <- c(type)}
-    plotdata <- plotdata |>
-      dplyr::filter(col_type %in% type)
-  }
-
-  # use lookup table to create variable col_type from col_name
-  plotdata["col_type" = unname(lookup[plotdata$col_name])]
-
-  # create text labels to display on plot
-
-  labels = data.frame(x = seq(60, 900, by = 120),
-                      text = c("Rest", "Warm Up", "Work", "Rest", "Work", "Rest", "Work", "Rest"))
-
-  # create title from information in rawdata$info
-  title <- paste(info$subj_info$subj_id, info$meas_date, "On/Off Kinetics")
-
-  # create plot
-  plt <- ggplot(plotdata,
-                aes(x = ZeroedTime, y = value))+
-    facet_grid(col_type~., scales = "free_y")+
-    geom_line(aes(color = col_name))+
-    theme_bw()+
-    scale_x_continuous(breaks = seq(0, 960, 120),
-                       minor_breaks = seq(0,960,60))+
-    labs(x = "Time (sec)",
-         y = "",
-         title = title,
-         color = "")
-
-  plt
 }
 
 #' Manipulate data frame for use in plotting functions
