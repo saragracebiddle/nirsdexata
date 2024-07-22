@@ -1,0 +1,89 @@
+---
+title: "on-off-kinetics-analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{on-off-kinetics-analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(nirsdexata)
+```
+
+Read in NIRS data.
+```{r}
+rawdata <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
+```
+
+The `rawdata` object is a list and can be interacted with like a list. The `data` slot contains the raw data, read in exactly from the file.
+
+```{r}
+head(rawdata$data)
+```
+
+The `info` slot contains all information about the measurement as an `info` object, which is a list. The `info` object can be edited. See the \\TODO add thing to get to rd page for the info object.
+```{r}
+rawdata$info$subj_info$subj_id <- "ID_1"
+rawdata$info$meas_id <- "0"
+```
+
+## Annotating Data using Info
+
+There are two slots in info that are useful for data annotations. Use the `rawdata$info$bads` slot to list columns that should be removed from analysis. 
+
+```{r}
+rawdata$info$bads <- c("TSIFF")
+```
+
+Use the `rawdata$info$bounds$removed` to list the sample numbers of data rows that should be removed from analysis. 
+
+```{r}
+rawdata$info$bounds$removed <- c()
+```
+
+```{r}
+rawdata$info$bounds$meas_start <- {startmin} * 60 + {startsec}
+rawdata$info$bounds$meas_end <- 960
+```
+
+## Interactive Plotting
+
+The interactive plotting function will open a panel displaying the data.
+
+Brush points to select them.
+Click the `Remove` button to remove all selected values. Click `Reset` to undo all selections.
+Double click to zoom to the area selected with the brush. Double click again to zoom back out. 
+
+When you have removed all data you wish from analysis, click `Done` and the function will save your selections in `info`. 
+```{r}
+rawdata <- plot_rawdata(rawdata)
+```
+
+Run asymptotic models and get steady state values. 
+```{r}
+models <- analysis(rawdata)
+```
+
+Plot regression results. 
+```{r}
+plot_regressions(models)
+```
+
+View regression coefficients. 
+```{r}
+models$coefs
+```
+
+```{r}
+
+```
+
+
