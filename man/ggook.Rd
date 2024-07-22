@@ -4,14 +4,14 @@
 \alias{ggook}
 \title{Wrapper around ggplot functions to plot on/off kinetics}
 \usage{
-ggook(data, xmin = 0, xmax = 960)
+ggook(data, x, y)
 }
 \arguments{
 \item{data}{data frame to use}
 
-\item{xmin}{minimum x value to display}
+\item{x}{limits}
 
-\item{xmax}{maximum x value to display}
+\item{y}{limits}
 }
 \description{
 Wrapper around ggplot functions to plot on/off kinetics

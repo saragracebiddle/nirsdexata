@@ -7,7 +7,7 @@
 #' @return ggplot
 #' @export
 #'
-ook_plot <- function(rawdata, type = NULL){
+plot_rawdata <- function(rawdata, type = NULL){
   # TODO stop if not object of class rawdata
 
     plotdata <- prepare_for_ook_plot(rawdata, type = NULL)
@@ -53,7 +53,7 @@ ggook <- function(data, x, y){
   #TODO make manual color scale work
  plt <-  ggplot(data,
          aes(x = ZeroedTime, y = value))+
-    geom_line(aes(color = col_name))+
+    geom_line(aes(color = col_name), na.rm = TRUE)+
     theme_bw()+
     coord_cartesian(xlim = x, ylim = y, expand = FALSE)+
     labs(x = "Time (sec)",

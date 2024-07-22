@@ -1,35 +1,25 @@
-#' UI for plotting gadget
-#'
-#' @noRd
-ook_ui <- function(){
-
-
-}
-
-#' Server logic for plotting gadget
-#'
-#' @param input,output,session Internal `{shiny}` parameters
-#' @noRd
-ook_server <- function(){
-
-}
-
 #' Plotting gadget for rawdata object
 #'
 #' @param rawdata rawdata object
 #'
-#' @return TODO
+#' @return rawdata object
 #' @export
-plot_rawdata <- function(rawdata){
+interact_rawdata <- function(rawdata){
 
   ui <- miniPage(
     gadgetTitleBar("Plot",
                    left = miniTitleBarCancelButton(),
                    right = miniTitleBarButton("done", "Done")),
-    miniContentPanel(
-      plotOutput("ook_plot", height = "100%", brush = "brush",
-                 dblclick = "dblclick")
-    ),
+    fillCol(
+      miniContentPanel(
+        plotOutput("ook_plot", height = "100%", brush = "brush",
+                   dblclick = "dblclick")
+      ),
+      miniContentPanel(
+        plotOutput("ook_plot_zoom", height = "100%", brush= "brush2")
+      )
+    )
+    ,
     miniButtonBlock(
       actionButton("reset", "Reset"),
       actionButton("remove", "Remove")
@@ -56,12 +46,16 @@ plot_rawdata <- function(rawdata){
   observeEvent(input$dblclick, {
     brush <- input$brush
     if (!is.null(brush)) {
-      ranges$x <- c(brush$xmin, brush$xmax)
-      ranges$y <- c(brush$ymin, brush$ymax)
+      ranges$xmin <- brush$xmin
+      ranges$xmax <- brush$xmax
+      ranges$ymin <- brush$ymin
+      ranges$ymax <- brush$ymax
 
     } else {
-      ranges$x <- NULL
-      ranges$y <- NULL
+      ranges$xmin <- NULL
+      ranges$xmax <- NULL
+      ranges$ymin <- NULL
+      ranges$ymax <- NULL
     }
   })
 
@@ -80,10 +74,29 @@ plot_rawdata <- function(rawdata){
 
     })
 
+    plotdata_zoom <- reactive({
+      if(is.null(ranges$xmin)){
+        plotdata()
+      }else{
+      plotdata() |>
+        dplyr::filter(
+          ZeroedTime > ranges$xmin & ZeroedTime < ranges$xmax
+        ) |>
+        dplyr::filter(
+          value > ranges$ymin & value < ranges$ymax
+        )
+      }
+
+    })
+
 
 
     output$ook_plot <- renderPlot({
-      ggook(plotdata(), ranges$x, ranges$y)
+      ggook(plotdata(), NULL, NULL)
+    })
+
+    output$ook_plot_zoom <- renderPlot({
+      ggook(plotdata_zoom(), NULL, NULL)
     })
 
     observeEvent(input$cancel, {
@@ -113,9 +126,9 @@ plot_rawdata <- function(rawdata){
 
 
     observeEvent(input$remove, {
-      brushed <- input$brush
-      brsh <- brushedPoints(plotdata(),
-                            input$brush)
+
+      brsh <- brushedPoints(plotdata_zoom(),
+                            input$brush2)
 
       new <- unique(brsh$samp_num)
       print(brsh)
@@ -128,32 +141,4 @@ plot_rawdata <- function(rawdata){
   }
   runGadget(ui, server, viewer =dialogViewer("plot_rawdata"))
 }
-
-wrapPage <- function(title, content){
-  miniTabPanel(
-    title,
-    miniContentPanel(content)
-    )
-}
-
-ook_by_type_UI <- function(id, types){
-  n <- length(types)
-
-  wrapped <- vector("list", n)
-
-  for(t in types){
-    wrapped[[i]] <- wrapPage(t, plotOutput(type))
-  }
-
-  wrapped$id <- NS(id, "tabPanelByType")
-  do.call("miniTabStripPanel", wrapped)
-}
-
-ook_by_type_Server <- function(id, types){
-  moduleServer(id, function(input, output, session){
-
-
-  })
-}
-
 
