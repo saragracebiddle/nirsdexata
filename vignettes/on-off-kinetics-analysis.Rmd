@@ -18,9 +18,15 @@ knitr::opts_chunk$set(
 library(nirsdexata)
 ```
 
-Read in NIRS data.
+
+# Example 1 
+
+## Read in Data
+
+Read in NIRS data using the `read_nirs` function. 
 ```{r}
-rawdata <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
+filepath = read_nirs_example("on_off_kinetics.txt")
+rawdata <- read_nirs(filepath)
 ```
 
 The `rawdata` object is a list and can be interacted with like a list. The `data` slot contains the raw data, read in exactly from the file.
@@ -31,6 +37,11 @@ head(rawdata$data)
 
 The `info` slot contains all information about the measurement as an `info` object, which is a list. The `info` object can be edited. See the \\TODO add thing to get to rd page for the info object.
 ```{r}
+rawdata$info
+```
+
+
+```{r}
 rawdata$info$subj_info$subj_id <- "ID_1"
 rawdata$info$meas_id <- "0"
 ```
@@ -39,38 +50,42 @@ rawdata$info$meas_id <- "0"
 
 There are two slots in info that are useful for data annotations. Use the `rawdata$info$bads` slot to list columns that should be removed from analysis. 
 
+If the `read_nirs` function was used to read in the data, the function will automatically mark "TSIFF" as bad for all datasets. It will also mark Tx3 as bads when the "TSI" optode template is used for export. See the second example. 
+
 ```{r}
-rawdata$info$bads <- c("TSIFF")
+rawdata$info$bads
 ```
 
-Use the `rawdata$info$bounds$removed` to list the sample numbers of data rows that should be removed from analysis. 
+Refer to the collected data to get the time that testing started in the NIRS file. Update the `meas_start` slot using this data. 
 
 ```{r}
-rawdata$info$bounds$removed <- c()
+startmin = 0
+startsec = 0
 ```
 
 ```{r}
-rawdata$info$bounds$meas_start <- {startmin} * 60 + {startsec}
-rawdata$info$bounds$meas_end <- 960
+rawdata$info$bounds$meas_start <- startmin * 60 + startsec
 ```
 
 ## Interactive Plotting
 
-The interactive plotting function will open a panel displaying the data.
+The interactive plotting function will open a panel displaying two graphs. They look the same when you first open the panel. 
 
-Brush points to select them.
-Click the `Remove` button to remove all selected values. Click `Reset` to undo all selections.
-Double click to zoom to the area selected with the brush. Double click again to zoom back out. 
+Use the top graph to zoom in on the bottom graph. Use your mouse to click and drag over the area in the top graph that you wish you zoom to. Double click to zoom the bottom graph. 
+
+On the bottom graph, use your mouse to click and drag over an area that should be removed from analysis, due to movement or other factors. Click Remove to remove the values. Click Reset to undo all selections. 
+
+Double click on the top graph again to zoom back out. 
 
 When you have removed all data you wish from analysis, click `Done` and the function will save your selections in `info`. 
 ```{r}
-rawdata <- plot_rawdata(rawdata)
+#rawdata <- interact_rawdata(rawdata)
 ```
 
 
-Static plot of on/off kinetics
+Static plot of on/off kinetics.
 ```{r}
-ook_plot(rawdata)
+plot_rawdata(rawdata)
 ```
 
 
@@ -90,5 +105,32 @@ models$coefs
 ```
 
 
+# Example 2
 
+```{r}
+filepath = read_nirs_example("on_off_kinetics_2.txt")
+rawdata <- read_nirs(filepath)
+rawdata$info$subj_info$subj_id <- "ID_2"
+rawdata$info$meas_id <- "0"
+rawdata$info
+```
+
+```{r}
+rawdata$info$bads
+```
+
+```{r}
+startmin = 21
+startsec = 30
+rawdata$info$bounds$meas_start <- startmin * 60 + startsec
+```
+
+```{r}
+plot_rawdata(rawdata)
+```
+
+```{r}
+models <- analysis(rawdata)
+models$coefs
+```
 

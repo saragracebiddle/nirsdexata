@@ -145,9 +145,18 @@ print.info <- function(x, ...){
 
   ncols = length(x[["cols"]][["col_name"]])
 
-  msg_nchan <- glue::glue("Measurement with {nchan} columns.")
+  meas_length = x[["bounds"]][["last_samp"]]
 
-  # \\TODO create more informative print method for info obejct
+  meas_date = x[["meas_date"]]
+
+  device_info = x[["device_info"]]
+  subj_info = x[["subj_info"]]
+
+  msg_nchan <- glue::glue("{device_info$device_type} {device_info$device_model}
+                          {subj_info$subj_id}  {meas_date}
+                          Measurement with {ncols} columns and {meas_length} samples.")
+
+  # \\TODO create more informative print method for info object
   # needs to be able to ignore missing/NULL elements
 
   #device_type <- x[["device_info"]][["type"]]

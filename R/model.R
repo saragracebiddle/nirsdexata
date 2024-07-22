@@ -32,3 +32,21 @@ run_models <- function(rawdata){
 
   nested[, Model := map(data, asym_model)]
 }
+
+#' Calculate steady state values
+#'
+#' Default width used to calculate steady state is 30 seconds
+#'
+#' @param data data.frame returned from `prepare_for_modeling()`
+#'
+#' @return data.table
+#' @export
+steady_states <- function(data, width = 30){
+
+data[
+  Section != "BegRest" & Section != "WarmUp" & SectionZeroedTime > val,
+  .(steadystate = mean(value, na.rm = TRUE)),
+  by = .(Section, col_type),
+  env = list(val = width)
+]
+}

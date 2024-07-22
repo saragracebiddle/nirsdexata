@@ -44,6 +44,8 @@ analysis <- function(rawdata){
                         Augment = map(Model, augment)
                       ) , ]
 
+  steadystates <- steady_states(prep2)
+
   tidy <- unnest_dt(asym_models,
                     col = Tidy,
                     id = list(Section, col_type)) |>
@@ -54,7 +56,8 @@ analysis <- function(rawdata){
   coefs <- tidy[,
                 .(Section, col_type, Asym, R0, lrc)
   ][,
-    Tau := (1/exp(lrc))]
+    Tau := (1/exp(lrc))] |>
+    merge(y = steadystates)
 
   augment <- unnest_dt(asym_models, col = Augment,
                        id = list(Section, col_type)) |>
