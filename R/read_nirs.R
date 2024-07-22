@@ -115,15 +115,7 @@ read_nirs.txt <- function(file, ...,  delim = NULL){
   # instead of doing this explicitly, take from the column names
   # and other metadata
   if(export_type == "haemoglobin"){
-    if(ot == "PortaMon TSI"){
 
-        ch_name = c("S1_D1_759","S1_D1_854","S2_D1_759","S2_D1_854","S3_D1_761","S3_D1_856", "TSI")
-        ch_type = c(rep(c("hbo", "hbr"),3), "tsi")
-        source_num = c(rep(c(1L,2L,3L), each = 2), NA_integer_)
-        det_num = c(rep(1L, times = 6), NA_integer_)
-        wavelength = c(rep(c(759L, 854L), each = 2), 761L, 856L, NA_integer_)
-
-    } else{
 
         ch_name = c("S1_D1_759","S1_D1_854","S2_D1_759","S2_D1_854","S3_D1_761","S3_D1_856", "TSI", "TSIFF")
         ch_type = c(rep(c("hbo", "hbr"),3), "tsi", "misc")
@@ -131,7 +123,7 @@ read_nirs.txt <- function(file, ...,  delim = NULL){
         det_num = c(rep(1L, times = 6), NA_integer_, NA_integer_)
         wavelength = c(rep(c(759L, 854L), each = 2), 761L, 856L, NA_integer_, NA_integer_)
 
-    }
+
   } else {
 
       ch_name = c("S1_D1_759","S1_D1_854","S2_D1_759","S2_D1_854","S3_D1_761","S3_D1_856")
@@ -149,9 +141,9 @@ read_nirs.txt <- function(file, ...,  delim = NULL){
 
 
   if(ot == "PortaMon TSI"){
-    bads = c("S3_D1 761", "S3_D1 856")
+    bads = c("S3_D1_761", "S3_D1_856", "TSIFF")
   } else {
-    bads = c()
+    bads = c("TSIFF")
   }
 
   rawdata <- rawdata(
