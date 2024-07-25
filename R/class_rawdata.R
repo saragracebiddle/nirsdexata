@@ -11,22 +11,20 @@ new_rawdata <- function(data = data.frame(),
                         class = character()
                         ){
   stopifnot(is.data.frame(data))
-  #TODO create is.info function
+  stopifnot(is.info(info))
 
 
   #validate_rawdata(data, info)
 
-  first_samp = data[["samp_num"]][[1]]
+  first_samp(info) <- data[["samp_num"]][[1]]
 
-  last_samp = data[["samp_num"]][[length(data[["samp_num"]])]]
-  meas_start = first_samp / info[["sfreq"]]
-  meas_end = last_samp / info[["sfreq"]]
-
-  info[["bounds"]] = list("first_samp" = first_samp,
-                          "last_samp" = last_samp,
-                          "meas_start" = meas_start,
-                          "meas_end" = meas_end,
-                          "removed" = c())
+  last_samp(info) <-  data[["samp_num"]][[length(data[["samp_num"]])]]
+  if(is.null(meas_start(info))){
+    meas_start(info) <-  first_samp(info) / sfreq(info)
+  }
+  if(is.null(meas_end(info))){
+    meas_end(info) <-  last_samp(info) / sfreq(info)
+  }
 
   rawdata <- list("data" = data,
                   "info" = info)
@@ -81,7 +79,7 @@ rawdata <- function(data = data.frame(),
                     ){
   data <- data |> setDT()
 
-  info <- info(col_names = col_names,
+  info <- create_info(col_names = col_names,
                col_types = col_types,
                device_info = device_info,
                subj_info = subj_info,
@@ -117,25 +115,144 @@ plot.rawdata <- function(x, ...){
 
 }
 
+
+############# Accessors and Setters
+
 #' @export
-adjust_start.rawdata <- function(x, adj_by){
-  info = x[["info"]]
+bads.rawdata <- function(x){
+  x$info$bads
+}
 
-  info <- adjust_start(info, adj_by)
+#' @export
+`bads<-.rawdata` <- function(x, value){
+  x$info$bads <- value
+  x
+}
 
+
+#' @export
+col_names.rawdata <- function(x){
+  x$info$cols$col_name
+}
+
+#' @export
+col_types.rawdata <- function(x){
+  x$info$cols$col_type
+}
+
+#' @export
+device_model.rawdata <- function(x){
+  x$info$device_info$device_model
+}
+
+#' @export
+device_site.rawdata <- function(x){
+  x$info$device_info$device_site
+}
+
+#' @export
+device_type.rawdata <- function(x){
+  x$info$device_info$device_type
+}
+
+#' @export
+first_samp.rawdata <- function(x){
+  x$info$bounds$first_samp
+}
+
+#' @export
+info.rawdata <- function(x){
+  i <- x$info
+  return(i)
+}
+
+#' @export
+last_samp.rawdata <- function(x){
+  x$info$bounds$last_samp
+}
+
+#' @export
+meas_date.rawdata <- function(x){
+  x$info$meas_date
+}
+
+#' @export
+meas_end.rawdata <- function(x){
+  x$info$bounds$meas_end
+}
+
+#' @export
+`meas_end<-.rawdata` <- function(x, value){
+  x$info$bounds$meas_end <- value
   x
 }
 
 #' @export
-adjust_end.rawdata <- function(x, adj_by){
-
-  info = x[["info"]]
-
-  info <- adjust_end(info, adj_by)
-
-  info
+meas_id.rawdata <- function(x){
+  x$info$meas_id
 }
 
+#' @export
+`meas_id<-.rawdata` <- function(x, value){
+  x$info$meas_id <- value
+  x
+}
 
+#' @export
+meas_start.rawdata <- function(x){
+  x$info$bounds$meas_start
+}
 
+#' @export
+`meas_start<-.rawdata` <- function(x, value){
+  x$info$bounds$meas_start <- value
+  x
+}
+
+#' @export
+removed.rawdata <- function(x){
+  x$info$bounds$removed
+}
+
+#' @export
+`removed<-.rawdata` <- function(x, value){
+  x$info$bounds$removed <- value
+  x
+}
+
+#' @export
+sfreq.rawdata <- function(x){
+  x$info$sfreq
+}
+
+#' @export
+subj_age.rawdata <- function(x){
+  x$info$subj_info$subj_age
+}
+
+#' @export
+subj_height.rawdata <- function(x){
+  x$info$subj_info$subj_height
+}
+
+#' @export
+subj_id.rawdata <- function(x){
+  x$info$subj_info$subj_id
+}
+
+#' @export
+`subj_id<-.rawdata` <- function(x, value){
+  x$info$subj_info$subj_id <- value
+  x
+}
+
+#' @export
+subj_sex.rawdata <- function(x){
+  x$info$subj_info$subj_sex
+}
+
+#' @export
+subj_weight.rawdata <- function(x){
+  x$info$subj_info$subj_weight
+}
 

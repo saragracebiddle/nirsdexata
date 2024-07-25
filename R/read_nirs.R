@@ -146,6 +146,16 @@ read_nirs.txt <- function(file, ...,  delim = NULL){
     bads = c("TSIFF")
   }
 
+  info <- create_info(col_names = ch_name,
+                      col_types = ch_type,
+                      device_type = "NIRS",
+                      device_model = "PortaMon",
+                      device_serial = serialnum,
+                      meas_date =meas_date,
+                      sfreq = hz,
+                      bads = bads)
+
+
   rawdata <- rawdata(
     data = out,
     col_names = ch_name,

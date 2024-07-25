@@ -37,13 +37,13 @@ head(rawdata$data)
 
 The `info` slot contains all information about the measurement as an `info` object, which is a list. The `info` object can be edited. See the \\TODO add thing to get to rd page for the info object.
 ```{r}
-rawdata$info
+info(rawdata)
 ```
 
 
 ```{r}
-rawdata$info$subj_info$subj_id <- "ID_1"
-rawdata$info$meas_id <- "0"
+subj_id(rawdata) <- "ID_1"
+meas_id(rawdata) <- "0"
 ```
 
 ## Annotating Data using Info
@@ -53,7 +53,7 @@ There are two slots in info that are useful for data annotations. Use the `rawda
 If the `read_nirs` function was used to read in the data, the function will automatically mark "TSIFF" as bad for all datasets. It will also mark Tx3 as bads when the "TSI" optode template is used for export. See the second example. 
 
 ```{r}
-rawdata$info$bads
+bads(rawdata)
 ```
 
 Refer to the collected data to get the time that testing started in the NIRS file. Update the `meas_start` slot using this data. 
@@ -64,7 +64,7 @@ startsec = 0
 ```
 
 ```{r}
-rawdata$info$bounds$meas_start <- startmin * 60 + startsec
+meas_start(rawdata) <- startmin * 60 + startsec
 ```
 
 ## Interactive Plotting
@@ -79,7 +79,7 @@ Double click on the top graph again to zoom back out.
 
 When you have removed all data you wish from analysis, click `Done` and the function will save your selections in `info`. 
 ```{r}
-#rawdata <- interact_rawdata(rawdata)
+rawdata <- interact_rawdata(rawdata)
 ```
 
 
@@ -110,19 +110,19 @@ models$coefs
 ```{r}
 filepath = read_nirs_example("on_off_kinetics_2.txt")
 rawdata <- read_nirs(filepath)
-rawdata$info$subj_info$subj_id <- "ID_2"
-rawdata$info$meas_id <- "0"
+subj_id(rawdata) <- "ID_2"
+meas_id(rawdata) <- "0"
 rawdata$info
 ```
 
 ```{r}
-rawdata$info$bads
+bads(rawdata)
 ```
 
 ```{r}
 startmin = 21
 startsec = 30
-rawdata$info$bounds$meas_start <- startmin * 60 + startsec
+meas_start(rawdata) <- startmin * 60 + startsec
 ```
 
 ```{r}
@@ -131,6 +131,9 @@ plot_rawdata(rawdata)
 
 ```{r}
 models <- analysis(rawdata)
+plot_regressions(models)
+```
+```{r}
 models$coefs
 ```
 

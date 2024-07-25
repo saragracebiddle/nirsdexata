@@ -28,14 +28,33 @@ validate_info <- function(info){
   # TODO
   # meas_start cannot be less than the first samp_num/sfreq
 
+
+  # if subj_sex is provided,
+  # check it is a valid input ("M" of"F")
+  # if(!is.null(info$subj_info$subj_sex)){
+  #   info$subj_info$subj_sex = match.arg(info$subj_info$subj_sex, c("M","F"))
+  # }
+
+  # if(!is.null(col_info)){
+  #   col_names <- col_info$col_names
+  #   col_types <- col_info$col_types
+  # }
+  # check col_info contains col_names and col_types
+  # that col_types is of length 1 or the same length as col_names
+  # that col_names and col_types are both character vectors
+  # if(!is.character(col_names))
+
   info
 }
 
 #' Create an Info object
 #'
 #' @description
-#' create `info` object to record measurement metadata. This object behaves
+#' Create `info` object to record measurement metadata. This object behaves
 #' like a list. It contains all metadata available for the measurement.
+#' The only required input is `col_names`. Even if `col_names` is the only
+#' user-supplied input, the `info` object will have empty slots for all possible
+#' values.
 #'
 #' @details
 #' Implementation is based on the info class for MNE python.
@@ -48,13 +67,13 @@ validate_info <- function(info){
 #'
 #'
 #'
-#' @param col_names character vector of names of data columns
-#' @param col_types character vector of data types. Defaults to "misc".
-#' @param device_type device type that collected the data
-#' @param device_model device model
-#' @param device_serial device serial identifier
-#' @param device_site device site
-#' @param device_info device information as a list
+#' @param col_names A character vector of names of data columns
+#' @param col_types  A character vector of data types. Defaults to "misc".
+#' @param device_type Device type that collected the data.
+#' @param device_model Device model name.
+#' @param device_serial Device serial identifier.
+#' @param device_site Device site.
+#' @param device_info A list of device information.
 #' @param subj_id subject identifier
 #' @param subj_sex subject sex
 #' @param subj_age subject age
@@ -69,10 +88,11 @@ validate_info <- function(info){
 #' @param sfreq sampling frequency in Hz
 #' @param bads list of channels that have bad signal
 #'
-#' @return info
+#' @return Info object containing all provided parameters. The Info object
+#' inherits from list, so will behave as a list.
 #'
 #' @export
-info <- function(col_names = character(),
+create_info <- function(col_names = character(),
                  col_types = "misc",
                  col_info = NULL,
                  device_type = NULL,
@@ -94,9 +114,6 @@ info <- function(col_names = character(),
                  sfreq = NULL,
                  bads = NULL){
 
-  if(!is.null(subj_sex)){
-    subj_sex = match.arg(subj_sex, c("M","F"))
-  }
 
 
   bounds = list("meas_start" = meas_start,
@@ -112,7 +129,7 @@ info <- function(col_names = character(),
   # maybe as a list column?
 
   if(is.null(device_info)){
-    deice_info = list("device_type" = device_type,
+    device_info = list("device_type" = device_type,
                       "device_model" = device_model,
                       "device_serial" = device_serial,
                       "device_site" = device_site)
@@ -169,66 +186,267 @@ print.info <- function(x, ...){
   invisible(x)
 }
 
-
-adjust_start <- function(x, adj_by){
-  UseMethod("adjust_start")
+#' @export
+is.info <- function(x){
+  if(length(intersect(c("info"), class(x))) == 1){
+    return(TRUE)
+  }
+  return(FALSE)
 }
 
-#'@export
-adjust_start.info <- function(x, adj_by){
 
-  start <- x[["bounds"]][["meas_start"]]
+####### Accessors and Setters
 
-  if((start + adj_by) < 0){
-    stop(
-      "Cannot adjust meas_start to before data begins.",
-      call. = FALSE
-    )
-  }
+#' @export
+bads.info <- function(x) x$bads
 
-  end <- x[["bounds"]][["meas_end"]]
-
-  if((start+adj_by) > end){
-    stop(
-      "Cannot adjust meas_start to after data ends.",
-      call. = FALSE
-    )
-  }
-
-  new = start + adj_by
-
-  x[["bounds"]][["meas_start"]] <- new
-
+#' @export
+`bads<-.info` <- function(x, value) {
+  x$bads <- value
   x
 }
 
 #' @export
-adjust_end.info <- function(x, adj_by){
+col_names.info <- function(x){
+  x$cols$col_names
+}
 
-  start <- x[["bounds"]][["meas_start"]]
-  end <- x[["bounds"]][["meas_end"]]
+#' @export
+col_types.info <- function(x){
+  x$cols$col_types
+}
 
-  if((end + adj_by) < start){
-    stop(
-      "Cannot adjust meas_end to before data begins.",
-      call. = FALSE
-    )
-  }
+#' @export
+device_type.info <- function(x){
+  x$device_info$device_type
+}
 
-  new = end + adj_by
-
-  sfreq = x[["sfreq"]]
-  end_samp = x[["bounds"]][["last_samp"]]
-
-  if((new)*sfreq > end_samp){
-    warning(
-      "Adjusted meas_end after data ends. Setting meas_end to time of last sample.",
-      call. = FALSE
-    )
-    new = end_samp / sfreq
-  }
-
-  x[["bounds"]][["meas_end"]] <- new
-
+#' @export
+`device_type<-.info` <- function(x, value){
+  x$device_info$device_type <- value
   x
 }
+
+#' @export
+device_model.info <- function(x){
+  x$device_info$device_model
+}
+
+#' @export
+`device_model<-.info` <- function(x, value){
+  x$device_info$device_model <- value
+  x
+}
+
+#' @export
+device_site.info <- function(x){
+  x$device_info$device_site
+}
+
+#' @export
+`device_site<-.info` <- function(x, value){
+  x$device_info$device_site <- value
+  x
+}
+
+#' @export
+device_type.info <- function(x){
+  x$device_info$device_type
+}
+
+#' @export
+`device_type<-.info` <- function(x, value){
+  x$device_info$device_type <- value
+  x
+}
+
+#' @export
+first_samp.info <- function(x) x$bounds$first_samp
+
+#' @export
+`first_samp<-.info` <- function(x,value) {
+  x$bounds$first_samp <- value
+  x
+}
+
+#' @export
+last_samp.info <- function(x) x$bounds$last_samp
+
+#' @export
+`last_samp<-.info` <- function(x,value) {
+  x$bounds$last_samp <- value
+  x
+}
+#' @export
+meas_date.info <- function(x){
+  x$meas_date
+}
+
+#' @export
+`meas_date<-.info` <- function(x, value){
+  x$meas_date <- value
+  x
+}
+
+#' @export
+meas_end.info <- function(x){
+  x$bounds$meas_end
+}
+
+#' @export
+`meas_end<-.info` <- function(x, value){
+  x$bounds$meas_end <- value
+  x
+}
+
+#' @export
+meas_id.info <- function(x){
+  x$meas_id
+}
+
+#' @export
+`meas_id<-.info` <- function(x, value){
+  x$meas_id <- value
+  x
+}
+
+#' @export
+meas_start.info <- function(x){
+  x$bounds$meas_start
+}
+
+#' @export
+`meas_start<-.info` <- function(x, value){
+  x$bounds$meas_start <- value
+  x
+}
+
+#' @export
+sfreq.info <- function(x){
+  x$sfreq
+}
+
+#' @export
+`sfreq<-.info` <- function(x, value){
+  x$sfreq <- value
+  x
+}
+
+#' @export
+subj_id.info <- function(x){
+  x$subj_info$subj_id
+}
+
+#' @export
+`subj_id<-.info` <- function(x, value){
+  x$subj_info$subj_id <- value
+  x
+}
+
+#' @export
+subj_sex.info <- function(x){
+  x$subj_info$subj_sex
+}
+
+#' @export
+`subj_sex<-.info` <- function(x, value){
+  x$subj_info$subj_sex <- value
+  x
+}
+
+#' @export
+subj_age.info <- function(x){
+  x$subj_info$subj_age
+}
+
+#' @export
+`subj_age<-.info` <- function(x, value){
+  x$subj_info$subj_age <- value
+  x
+}
+
+#' @export
+subj_height.info <- function(x){
+  x$subj_info$subj_height
+}
+
+#' @export
+`subj_height<-.info` <- function(x, value){
+  x$subj_info$subj_height <- value
+  x
+}
+
+#' @export
+subj_weight.info <- function(x){
+  x$subj_info$subj_weight
+}
+
+#' @export
+`subj_weight<-.info` <- function(x, value){
+  x$subj_info$subj_weight <- value
+  x
+}
+
+
+# adjust_start <- function(x, adj_by){
+#   UseMethod("adjust_start")
+# }
+
+
+# adjust_start.info <- function(x, adj_by){
+#
+#   start <- x[["bounds"]][["meas_start"]]
+#
+#   if((start + adj_by) < 0){
+#     stop(
+#       "Cannot adjust meas_start to before data begins.",
+#       call. = FALSE
+#     )
+#   }
+#
+#   end <- x[["bounds"]][["meas_end"]]
+#
+#   if((start+adj_by) > end){
+#     stop(
+#       "Cannot adjust meas_start to after data ends.",
+#       call. = FALSE
+#     )
+#   }
+#
+#   new = start + adj_by
+#
+#   x[["bounds"]][["meas_start"]] <- new
+#
+#   x
+# }
+#
+#
+# adjust_end.info <- function(x, adj_by){
+#
+#   start <- x[["bounds"]][["meas_start"]]
+#   end <- x[["bounds"]][["meas_end"]]
+#
+#   if((end + adj_by) < start){
+#     stop(
+#       "Cannot adjust meas_end to before data begins.",
+#       call. = FALSE
+#     )
+#   }
+#
+#   new = end + adj_by
+#
+#   sfreq = x[["sfreq"]]
+#   end_samp = x[["bounds"]][["last_samp"]]
+#
+#   if((new)*sfreq > end_samp){
+#     warning(
+#       "Adjusted meas_end after data ends. Setting meas_end to time of last sample.",
+#       call. = FALSE
+#     )
+#     new = end_samp / sfreq
+#   }
+#
+#   x[["bounds"]][["meas_end"]] <- new
+#
+#   x
+# }

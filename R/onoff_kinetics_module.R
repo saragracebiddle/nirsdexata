@@ -29,12 +29,12 @@ interact_rawdata <- function(rawdata){
   server <- function(input, output, session){
 
     vals <- reactiveValues(
-      meas_start = rawdata$info$bounds$meas_start,
-      meas_end = rawdata$info$bounds$meas_end,
-      bads = rawdata$info$bads,
-      removed = rawdata$info$bounds$removed,
-      col_types = rawdata$info$cols$col_type,
-      col_names = rawdata$info$cols$col_name,
+      meas_start = meas_start(rawdata),
+      meas_end = meas_end(rawdata),
+      bads = bads(rawdata),
+      removed = removed(rawdata),
+      col_types = col_types(rawdata),
+      col_names = col_names(rawdata),
       type = NULL,
     )
 

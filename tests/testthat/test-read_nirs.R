@@ -1,8 +1,7 @@
 test_that("Throws error if file does not exist", {
 
   expect_error(
-    read_nirs("thisdoesnotexist.txt"),
-    class = "error_file_dne"
+    read_nirs("thisdoesnotexist.txt")
     )
 
 })

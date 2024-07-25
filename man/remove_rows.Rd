@@ -4,12 +4,14 @@
 \alias{remove_rows}
 \title{Remove rows from the data}
 \usage{
-remove_rows(data, removed)
+remove_rows(data = data.frame(), remove, col = charact)
 }
 \arguments{
-\item{data}{raw data}
+\item{data}{data.frame}
 
-\item{removed}{vector of sample numbers to remove}
+\item{remove}{vector of data to remove}
+
+\item{col}{column to remove `remove` from}
 }
 \value{
 data.frame

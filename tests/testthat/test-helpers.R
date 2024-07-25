@@ -14,28 +14,6 @@ test_that("types_from_names works", {
   expect_equal(test, types_from_names(longdata, col_types, col_names))
 })
 
-test_that("crop works", {
-
-  data <- data.frame(samp_num = seq(0,100),
-                     a = seq(0,100),
-                     b = seq(0,100),
-                     c = seq(0,100))
-
-  sfreq = 10
-  meas_start = 1.5
-
-  test <- adjust_times(data, sfreq, meas_start, "samp_num")
-
-  cropped <- test |>
-    dplyr::filter(ZeroedTime >= 0)
-
-  expect_equal(cropped, crop(test, meas_start=meas_start))
-
-  meas_end = 5.3
-  cropped <- test |>
-    dplyr::filter(ZeroedTime >= 0 & ZeroedTime <= 5.3)
-  expect_equal(cropped, crop(test, meas_start = meas_start, meas_end = meas_end))
-})
 
 test_that("remove_bad works", {
 

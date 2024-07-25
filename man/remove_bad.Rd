@@ -2,12 +2,12 @@
 % Please edit documentation in R/helpers.R
 \name{remove_bad}
 \alias{remove_bad}
-\title{Remove bad data from the dataset}
+\title{Remove bad columns from the dataset}
 \usage{
 remove_bad(data, bads)
 }
 \arguments{
-\item{data}{data frame of data}
+\item{data}{data.frame of data}
 
 \item{bads}{columns to remove}
 }
@@ -15,5 +15,5 @@ remove_bad(data, bads)
 good data
 }
 \description{
-Remove bad data from the dataset
+Remove bad columns from the dataset
 }

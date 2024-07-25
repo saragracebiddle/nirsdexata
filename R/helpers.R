@@ -20,31 +20,11 @@ types_from_names <- function(data, col_types, col_names){
     dplyr::mutate(col_type = unname(lookup[data$col_name]))
 }
 
-#' Crop data by meas_start and meas_end
-#'
-#' @param data data.frame
-#' @param meas_start start of testing in seconds. defaults to 0.
-#' @param meas_end end of testing in seconds. defaults to NULL which does not
-#' remove anything from the end of the data.frame
-#'
-#' @return data.frame
-crop <- function(data, meas_start = 0, meas_end = NULL){
-  #TODO if data does not have time columns to work with
-  # TODO make meas_start and meas_end work with time in seconds and sample numbers?
 
-  if(is.null(meas_end)){
-    data |>
-      dplyr::filter(ZeroedTime >= 0)
-  } else{
-    data |>
-      dplyr::filter(ZeroedTime >= 0 & ZeroedTime <= meas_end)
-  }
-
-}
 
 #' Remove bad columns from the dataset
 #'
-#' @param data data frame of data
+#' @param data data.frame of data
 #' @param bads columns to remove
 #'
 #' @return good data
@@ -62,13 +42,18 @@ remove_bad <- function(data, bads){
 #' and values are replaced with NA
 #' replacing with NA helps with ggplot geom_line functions
 #'
-#' @param data raw data
-#' @param removed vector of sample numbers to remove
+#' @param data data.frame
+#' @param remove vector of data to remove
+#' @param col column to remove `remove` from
 #'
 #' @return data.frame
-remove_rows <- function(data, removed){
-  # TODO works with wide format as well as long format?
-  if(is.null(removed) | length(removed) < 1){
+remove_rows <- function(data = data.frame(), remove, col = charact){
+
+  stopifnot(is.data.frame(data))
+
+  data <- data |> setDT() |> copy()
+
+  if(is.null(remove) | length(remove) < 1){
     return(data)
   }
   data |>
@@ -90,6 +75,10 @@ remove_rows <- function(data, removed){
 #'
 #' @return data.frame
 adjust_times <- function(data, sfreq, meas_start, samp_num){
+
+  stopifnot(is.data.frame(data))
+
+
   data |>
     dplyr::mutate(Time = samp_num / sfreq,
                   ZeroedTime = Time - meas_start)
@@ -115,42 +104,7 @@ select_types <- function(data, type = NULL){
 }
 
 
-#' Prepare data to pass into shiny plotting function
-#'
-#' @param data data.frame
-#' @param sfreq sampling frequency
-#' @param meas_start start of measurement
-#' @param meas_end end of measurement
-#' @param bads character vector of column names marked as "bad"
-#' @param removed integer vector of sample numbers to remove from the dataset
-#' @param col_types character vector of column types
-#' @param col_names character vector of column names
-#' @param type type of signal to display on the graph. Defaults to NULL and displays all types.
-#'
-#' @return plotdata
-prepare_shiny_plot <- function(data,
-                               sfreq,
-                               meas_start,
-                               meas_end,
-                               bads,
-                               removed,
-                               col_types,
-                               col_names,
-                               type = NULL){
 
- data |>
-    remove_bad(bads = bads) |>
-    adjust_times(sfreq = sfreq, meas_start = meas_start, samp_num = samp_num) |>
-    crop(meas_start = meas_start, meas_end = meas_end) |>
-    tidyr::pivot_longer(cols = setdiff(col_names, bads),
-                        names_to = "col_name",
-                        values_to = "value")|>
-    remove_rows(removed = removed)|>
-    types_from_names(col_types = col_types,
-                     col_names = col_names) |>
-    select_types(type = type)
-
-}
 
 
 #' Average values across data type
@@ -194,20 +148,21 @@ create_sections <- function(data){
 #' @return data.frame
 prepare_for_modeling <- function(rawdata){
   rawdata$data |>
-    remove_bad(bads = rawdata$info$bads) |>
-    adjust_times(sfreq = rawdata$info$sfreq,
-                 meas_start = rawdata$info$bounds$meas_start,
+    remove_bad(bads = bads(rawdata)) |>
+    adjust_times(sfreq = sfreq(rawdata),
+                 meas_start = meas_start(rawdata),
                  samp_num = samp_num) |>
-    crop(meas_start = rawdata$info$bounds$meas_start,
-         meas_end = rawdata$info$bounds$meas_end) |>
+    crop(start = meas_start(rawdata),
+         end = meas_end(rawdata),
+         col = "Time") |>
     tidyr::pivot_longer(cols = setdiff(
-      rawdata$info$cols$col_name,
-      rawdata$info$bads
+      col_names(rawdata),
+      bads(rawdata)
     ), names_to = "col_name",
     values_to = "value") |>
-    remove_rows(removed = rawdata$info$bounds$removed) |>
-    types_from_names(col_types = rawdata$info$cols$col_type,
-                     col_names = rawdata$info$cols$col_name) |>
+    remove_rows(remove = removed(rawdata)) |>
+    types_from_names(col_types = col_types(rawdata),
+                     col_names = col_names(rawdata)) |>
     avg_type()|>
     create_sections()
 }
