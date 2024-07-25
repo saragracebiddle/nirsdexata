@@ -4,8 +4,12 @@
 \name{nirsdexata-package}
 \alias{nirsdexata}
 \alias{nirsdexata-package}
-\title{nirsdexata: What the Package Does (Title Case)}
+\title{nirsdexata: What the Package Does (One Line, Title Case)}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+What the package does (one paragraph).
+}
+\author{
+\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_height<-}
 \alias{subj_height<-}
-\title{Set the value of `subj_height`}
+\title{Set the value of \code{subj_height}}
 \usage{
 subj_height(x) <- value
 }
@@ -15,5 +15,5 @@ subj_height(x) <- value
 modified object
 }
 \description{
-Set the value of `subj_height`
+Set the value of \code{subj_height}
 }

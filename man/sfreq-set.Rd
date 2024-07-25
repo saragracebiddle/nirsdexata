@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{sfreq<-}
 \alias{sfreq<-}
-\title{Set the value of `sfreq`}
+\title{Set the value of \code{sfreq}}
 \usage{
 sfreq(x) <- value
 }
@@ -15,5 +15,5 @@ sfreq(x) <- value
 modified object
 }
 \description{
-Set the value of `sfreq`
+Set the value of \code{sfreq}
 }

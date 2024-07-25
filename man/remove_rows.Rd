@@ -4,14 +4,21 @@
 \alias{remove_rows}
 \title{Remove rows from the data}
 \usage{
-remove_rows(data = data.frame(), remove, col = charact)
+remove_rows(
+  dt = data.frame(),
+  remove,
+  ref_col = character(),
+  value_col = character()
+)
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
 
 \item{remove}{vector of data to remove}
 
-\item{col}{column to remove `remove` from}
+\item{ref_col}{column name to find \code{remove}}
+
+\item{value_col}{column to remove value from}
 }
 \value{
 data.frame

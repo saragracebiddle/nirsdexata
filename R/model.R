@@ -1,8 +1,8 @@
 #' nls wrapped with possibly
 #'
-#'
 #' @return function
 #' @export
+#' @noRd
 possibly_nls <- purrr::possibly(nls, otherwise = NA)
 
 
@@ -37,13 +37,14 @@ run_models <- function(rawdata){
 #'
 #' Default width used to calculate steady state is 30 seconds
 #'
-#' @param data data.frame returned from `prepare_for_modeling()`
+#' @param dt data.frame returned from `prepare_for_modeling()`
+#' @param width A double, number of seconds
 #'
 #' @return data.table
 #' @export
-steady_states <- function(data, width = 30){
+steady_states <- function(dt, width = 30){
 
-data[
+dt[
   Section != "BegRest" & Section != "WarmUp" & SectionZeroedTime > val,
   .(steadystate = mean(value, na.rm = TRUE)),
   by = .(Section, col_type),

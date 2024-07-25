@@ -2,16 +2,16 @@
 % Please edit documentation in R/generics.R
 \name{info}
 \alias{info}
-\title{Accessor for `info`}
+\title{Accessor for \code{info}}
 \usage{
 info(x)
 }
 \arguments{
-\item{x}{object that contains `info`}
+\item{x}{object that contains \code{info}}
 }
 \value{
-`info`
+\code{info}
 }
 \description{
-Accessor for `info`
+Accessor for \code{info}
 }

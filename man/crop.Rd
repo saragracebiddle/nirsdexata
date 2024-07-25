@@ -4,38 +4,38 @@
 \alias{crop}
 \title{Remove rows from data}
 \usage{
-crop(data, start, end, col)
+crop(dt, first, last, col)
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
 
-\item{start}{A numeric. If `col` is provided, rows with value less than
-`start` in column `col` are removed.  If `col` is not provided, rows
-with row number less than `start` are removed.
+\item{first}{A numeric. If \code{col} is provided, rows with value less than
+\code{first} in column \code{col} are removed.  If \code{col} is not provided, rows
+with row number less than \code{first} are removed.
 Defaults to NULL.}
 
-\item{end}{A numeric. If `col` is provided, rows with value greater than
-`end` in column `end` are removed.  If `col` is not provided, rows with
-row number greater than `end` are removed.
+\item{last}{A numeric. If \code{col} is provided, rows with value greater than
+\code{last} in column \code{last} are removed.  If \code{col} is not provided, rows with
+row number greater than \code{last} are removed.
 Defaults to NULL.}
 
-\item{col}{A character name of column to use to evaluate `start` and `end`.
+\item{col}{A character name of column to use to evaluate \code{first} and \code{end}.
 Defaults to NULL.
 
-If `start`,`end`, and `col` are NULL, the original data will be returned
+If \code{first},\code{last}, and \code{col} are NULL, the original data will be returned
 with a message that no rows were cropped.
 
-`start` and `end` are not inclusive. If `start` = 1, row 1 will not be removed.
-To remove row 1, `start` must be 2.}
+\code{first} and \code{last} are not inclusive. If \code{first} = 1, row 1 will not be removed.
+To remove row 1, \code{first} must be 2.}
 }
 \value{
 data.frame
 }
 \description{
-Delete rows from data. If `col` is provided, works like
-`dplyr::filter` and filters values in column `col` that are
-greater than `start` and less than `end`.
-If `col` is not provided, works like subsetting based on row numbers.
-Rows with row numbers less than `start` and greater than `end` are removed from
+Delete rows from data. If \code{col} is provided, works like
+\code{dplyr::filter} and filters values in column \code{col} that are
+greater than \code{first} and less than \code{last}.
+If \code{col} is not provided, works like subsetting based on row numbers.
+Rows with row numbers less than \code{first} and greater than \code{last} are removed from
 the dataset.
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/generics.R
 \name{first_samp<-}
 \alias{first_samp<-}
-\title{Setter for `first_samp`}
+\title{Setter for \code{first_samp}}
 \usage{
 first_samp(x) <- value
 }
 \arguments{
 \item{x}{object}
 
-\item{value}{value to set as `first_samp`}
+\item{value}{value to set as \code{first_samp}}
 }
 \value{
 modified object
 }
 \description{
-Setter for `first_samp`
+Setter for \code{first_samp}
 }

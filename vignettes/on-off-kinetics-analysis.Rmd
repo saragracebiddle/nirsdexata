@@ -79,7 +79,7 @@ Double click on the top graph again to zoom back out.
 
 When you have removed all data you wish from analysis, click `Done` and the function will save your selections in `info`. 
 ```{r}
-rawdata <- interact_rawdata(rawdata)
+#rawdata <- interact_rawdata(rawdata)
 ```
 
 

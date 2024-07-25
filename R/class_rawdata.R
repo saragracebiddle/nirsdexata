@@ -2,6 +2,8 @@
 #'
 #' @param data data frame
 #' @param info measurement metadata
+#' @param ... arguments to pass to children
+#' @param class optional character of subclass
 #'
 #' @return data frame of raw data
 #' @export

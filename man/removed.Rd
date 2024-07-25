@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{removed}
 \alias{removed}
-\title{Acessor for `removed`}
+\title{Acessor for \code{removed}}
 \usage{
 removed(x)
 }
@@ -10,8 +10,8 @@ removed(x)
 \item{x}{object}
 }
 \value{
-value if `removed` exists in the object, NULL otherwise
+value if \code{removed} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `removed`
+Acessor for \code{removed}
 }

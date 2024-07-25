@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_height}
 \alias{subj_height}
-\title{Acessor for `subj_height`}
+\title{Acessor for \code{subj_height}}
 \usage{
 subj_height(x)
 }
@@ -10,8 +10,8 @@ subj_height(x)
 \item{x}{object}
 }
 \value{
-value if `subj_height` exists in the object, NULL otherwise
+value if \code{subj_height} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `subj_height`
+Acessor for \code{subj_height}
 }

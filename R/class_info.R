@@ -94,7 +94,6 @@ validate_info <- function(info){
 #' @export
 create_info <- function(col_names = character(),
                  col_types = "misc",
-                 col_info = NULL,
                  device_type = NULL,
                  device_model = NULL,
                  device_serial = NULL,
@@ -187,6 +186,7 @@ print.info <- function(x, ...){
 }
 
 #' @export
+#' @noRd
 is.info <- function(x){
   if(length(intersect(c("info"), class(x))) == 1){
     return(TRUE)

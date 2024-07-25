@@ -10,6 +10,10 @@ new_rawdata(data = data.frame(), info = info(), ..., class = character())
 \item{data}{data frame}
 
 \item{info}{measurement metadata}
+
+\item{...}{arguments to pass to children}
+
+\item{class}{optional character of subclass}
 }
 \value{
 data frame of raw data

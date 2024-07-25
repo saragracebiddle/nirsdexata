@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{bads<-}
 \alias{bads<-}
-\title{Set the value of `bads`}
+\title{Set the value of \code{bads}}
 \usage{
 bads(x) <- value
 }
@@ -15,5 +15,5 @@ bads(x) <- value
 modified object
 }
 \description{
-Set the value of `bads`
+Set the value of \code{bads}
 }

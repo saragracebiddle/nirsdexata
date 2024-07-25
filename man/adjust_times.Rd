@@ -4,10 +4,10 @@
 \alias{adjust_times}
 \title{Create Time column}
 \usage{
-adjust_times(data, sfreq, meas_start, samp_num)
+adjust_times(dt, sfreq, meas_start, samp_num)
 }
 \arguments{
-\item{data}{data.frame to use}
+\item{dt}{data.frame to use}
 
 \item{sfreq}{sampling frequency}
 

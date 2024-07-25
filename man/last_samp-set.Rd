@@ -2,18 +2,18 @@
 % Please edit documentation in R/generics.R
 \name{last_samp<-}
 \alias{last_samp<-}
-\title{Setter for `last_samp`}
+\title{Setter for \code{last_samp}}
 \usage{
 last_samp(x) <- value
 }
 \arguments{
 \item{x}{object}
 
-\item{value}{value to set as `last_samp`}
+\item{value}{value to set as \code{last_samp}}
 }
 \value{
 modified object
 }
 \description{
-Setter for `last_samp`
+Setter for \code{last_samp}
 }

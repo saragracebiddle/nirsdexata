@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{device_type<-}
 \alias{device_type<-}
-\title{Set the value of `device_type`}
+\title{Set the value of \code{device_type}}
 \usage{
 device_type(x) <- value
 }
@@ -15,5 +15,5 @@ device_type(x) <- value
 modified object
 }
 \description{
-Set the value of `device_type`
+Set the value of \code{device_type}
 }

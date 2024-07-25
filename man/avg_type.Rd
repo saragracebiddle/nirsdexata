@@ -4,10 +4,14 @@
 \alias{avg_type}
 \title{Average values across data type}
 \usage{
-avg_type(data)
+avg_type(dt, col = character(), groups = character())
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
+
+\item{col}{character, name of column to calculate on}
+
+\item{groups}{columns to group by}
 }
 \value{
 data.frame

@@ -47,7 +47,7 @@ test_that("accessing elements of the object", {
 
 })
 
-test_that("all elements of info are created", {
-  #TODO write the validator function for Info class
-
-})
+# test_that("all elements of info are created", {
+#   #TODO write the validator function for Info class
+#
+# })

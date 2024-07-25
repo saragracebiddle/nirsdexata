@@ -11,9 +11,11 @@ extract_ext(file)
 }
 \value{
 file extension type
-* csv
-* xlsx
-* txt
+\itemize{
+\item csv
+\item xlsx
+\item txt
+}
 }
 \description{
 Get the file extension type

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_sex<-}
 \alias{subj_sex<-}
-\title{Set the value of `subj_sex`}
+\title{Set the value of \code{subj_sex}}
 \usage{
 subj_sex(x) <- value
 }
@@ -15,5 +15,5 @@ subj_sex(x) <- value
 modified object
 }
 \description{
-Set the value of `subj_sex`
+Set the value of \code{subj_sex}
 }

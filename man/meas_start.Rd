@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{meas_start}
 \alias{meas_start}
-\title{Acessor for `meas_start`}
+\title{Acessor for \code{meas_start}}
 \usage{
 meas_start(x)
 }
@@ -10,8 +10,8 @@ meas_start(x)
 \item{x}{object}
 }
 \value{
-value of `meas_start` if it exists, otherwise NULL
+value of \code{meas_start} if it exists, otherwise NULL
 }
 \description{
-Acessor for `meas_start`
+Acessor for \code{meas_start}
 }

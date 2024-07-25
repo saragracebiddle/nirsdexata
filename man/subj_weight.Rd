@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_weight}
 \alias{subj_weight}
-\title{Acessor for `subj_weight`}
+\title{Acessor for \code{subj_weight}}
 \usage{
 subj_weight(x)
 }
@@ -10,8 +10,8 @@ subj_weight(x)
 \item{x}{object}
 }
 \value{
-value if `subj_weight` exists in the object, NULL otherwise
+value if \code{subj_weight} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `subj_weight`
+Acessor for \code{subj_weight}
 }

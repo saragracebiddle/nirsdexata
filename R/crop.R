@@ -3,88 +3,88 @@
 #' @description
 #' Delete rows from data. If `col` is provided, works like
 #' `dplyr::filter` and filters values in column `col` that are
-#' greater than `start` and less than `end`.
+#' greater than `first` and less than `last`.
 #' If `col` is not provided, works like subsetting based on row numbers.
-#' Rows with row numbers less than `start` and greater than `end` are removed from
+#' Rows with row numbers less than `first` and greater than `last` are removed from
 #' the dataset.
 #'
 #'
-#' @param data data.frame
-#' @param start A numeric. If `col` is provided, rows with value less than
-#' `start` in column `col` are removed.  If `col` is not provided, rows
-#' with row number less than `start` are removed.
+#' @param dt data.frame
+#' @param first A numeric. If `col` is provided, rows with value less than
+#' `first` in column `col` are removed.  If `col` is not provided, rows
+#' with row number less than `first` are removed.
 #' Defaults to NULL.
-#' @param end A numeric. If `col` is provided, rows with value greater than
-#' `end` in column `end` are removed.  If `col` is not provided, rows with
-#' row number greater than `end` are removed.
+#' @param last A numeric. If `col` is provided, rows with value greater than
+#' `last` in column `last` are removed.  If `col` is not provided, rows with
+#' row number greater than `last` are removed.
 #' Defaults to NULL.
-#' @param col A character name of column to use to evaluate `start` and `end`.
+#' @param col A character name of column to use to evaluate `first` and `end`.
 #' Defaults to NULL.
 #'
-#' If `start`,`end`, and `col` are NULL, the original data will be returned
+#' If `first`,`last`, and `col` are NULL, the original data will be returned
 #' with a message that no rows were cropped.
 #'
-#' `start` and `end` are not inclusive. If `start` = 1, row 1 will not be removed.
-#' To remove row 1, `start` must be 2.
+#' `first` and `last` are not inclusive. If `first` = 1, row 1 will not be removed.
+#' To remove row 1, `first` must be 2.
 #'
 #' @return data.frame
-crop <- function(data, start, end, col){
+crop <- function(dt, first, last, col){
   UseMethod("crop")
 }
 
 #'@export
-crop.default <- function(data, start = NULL, end = NULL, col = NULL){
-  if(!is.data.frame(data)){
+crop.default <- function(dt, first = NULL, last = NULL, col = NULL){
+  if(!is.data.frame(dt)){
     stop(
-      "Provided `data` must be a `data.frame` or inherit from `data.frame`.",
+      "Provided `dt` must be a `data.frame` or inherit from `data.frame`.",
       call. = FALSE
     )
   }
-  data <- data |> setDT() |> copy()
+  dt <- dt |> setDT() |> copy()
 
-  if(is.null(start) & is.null(end)){
-    message("NULL inputs provided. Returning `data`.")
-    return(data)
+  if(is.null(first) & is.null(last)){
+    message("NULL inputs provided. Returning `dt`.")
+    return(dt)
   }
   if(is.null(col)){
-    if(is.null(start)){
-      start <- row.names(data)[1]
+    if(is.null(first)){
+      first <- row.names(dt)[1]
     }
-    if(is.null(end)){
-      nm <- row.names(data)
-      end <- nm[length(nm)]
+    if(is.null(last)){
+      nm <- row.names(dt)
+      last <- nm[length(nm)]
     }
-    start <- as.integer(start)
-    end <- as.integer(end)
-    return(data[s:e,
-                env = list(s = start, e = end)])
+    first <- as.integer(first)
+    last <- as.integer(last)
+    return(dt[s:e,
+                env = list(s = first, e = last)])
   } else{
     col <- as.character(col)
-    if(intersect(c(col), colnames(data)) != col){
+    if(intersect(c(col), colnames(dt)) != col){
       stop(
-        "Column `col` does not exist in `data`."
+        "Column `col` does not exist in `dt`."
       )
     }
-    if(!is.numeric(data[[col]])){
+    if(!is.numeric(dt[[col]])){
       stop(
         "Column `col` is not type numeric. Cannot crop using
         non-numeric values in `col`."
       )
     }
 
-    if(!is.null(end)){
-      end <- as.double(end)
-      data <- data[c <= e,
+    if(!is.null(last)){
+      last <- as.double(last)
+      dt <- dt[c <= e,
                    env = list(c = as.name(col),
-                              e = end)]
+                              e = last)]
     }
-    if(!is.null(start)){
-      start <- as.double(start)
-      data <- data[c >= s,
+    if(!is.null(first)){
+      first <- as.double(first)
+      dt <- dt[c >= s,
                    env = list(c = as.name(col),
-                              s = start)]
+                              s = first)]
     }
-    return(data)
+    return(dt)
   }
   stop(
     "I don't know how you did this, but your inputs must be wrong.

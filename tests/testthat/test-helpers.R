@@ -1,3 +1,33 @@
+test_that("avg_type", {
+  rawdata <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
+  p <- rawdata$data |>
+    remove_bad(bads = bads(rawdata)) |>
+    adjust_times(sfreq = sfreq(rawdata),
+                 meas_start = meas_start(rawdata),
+                 samp_num = "samp_num") |>
+    crop(first = meas_start(rawdata),
+         last = meas_end(rawdata),
+         col = "Time") |>
+    melt(id.vars = c("Time","samp_num", "ZeroedTime"),
+         measure.vars = setdiff(col_names(rawdata), c("Time","samp_num", "ZeroedTime", bads(rawdata))),
+         variable.name = "col_name",
+         value.name = "value")|>
+    remove_rows(remove = removed(rawdata),
+                ref_col = "samp_num",
+                value_col = "value") |>
+    types_from_names(col_types = col_types(rawdata),
+                     col_names = col_names(rawdata))
+
+  expect_equal(p[,
+                 .(value = mean(value, na.rm = T)),
+                 by = c("samp_num","Time","col_type","ZeroedTime")],
+               avg_type(p, col = "value",
+                        groups = c("samp_num","Time","col_type","ZeroedTime"))
+  )
+
+
+})
+
 test_that("types_from_names works", {
   col_names = c("a","b",'c',"d")
   col_types = c("A","B","A","B")
@@ -10,55 +40,38 @@ test_that("types_from_names works", {
       col_name,
       c("a","c") ~ "A",
       c("b","d") ~"B"
-    ))
+    )) |>setDT()
   expect_equal(test, types_from_names(longdata, col_types, col_names))
-})
+
+  rawdata <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
+  p <- rawdata$data |>
+    remove_bad(bads = bads(rawdata)) |>
+    adjust_times(sfreq = sfreq(rawdata),
+                 meas_start = meas_start(rawdata),
+                 samp_num = "samp_num") |>
+    crop(first = meas_start(rawdata),
+         last = meas_end(rawdata),
+         col = "Time")|>
+    melt(id.vars = c("Time","samp_num", "ZeroedTime"),
+         measure.vars = setdiff(col_names(rawdata), c("Time","samp_num","ZeroedTime", bads(rawdata))),
+         variable.name = "col_name",
+         value.name = "value") |>
+    remove_rows(remove = removed(rawdata),
+                ref_col = "samp_num",
+                value_col = "value") |>
+    types_from_names(col_types = col_types(rawdata),
+                     col_names = col_names(rawdata))
+
+  expect_setequal(colnames(p), c("samp_num","col_type","col_name","value","Time","ZeroedTime"))
+
+  })
 
 
-test_that("remove_bad works", {
-
-  data <- data.frame(samp_num = seq(0,100),
-                     a = seq(0,100),
-                     b = seq(0,100),
-                     c = seq(0,100))
-
-  bads <- c("c")
-  removed <- c(3,4,5)
-
-  test <- data |>
-    dplyr::select(!dplyr::any_of(bads)) |>
-    dplyr::rows_delete(y = data.frame(samp_num = removed))
-  expect_equal(test, remove_bad(data, removed, bads))
-
-  ex <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
-
-  expect_no_error(remove_bad(ex$data, removed = ex$info$bounds$removed, bads = ex$info$bads))
-
-})
-
-test_that("remove_bad works with null argument", {
-
-  ex <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
-
-  expect_equal(ex$data, remove_bad(ex$data,
-                                   bads = ex$info$bads))
-})
-
-test_that("remove_bad works with argument of length 1", {
-  ex <- read_nirs(read_nirs_example("on_off_kinetics.txt"))
-
-  ex$info$bads <- c("TSIFF")
-
-  expect_equal(ex$data |>
-                 dplyr::select(!TSIFF),
-               remove_bad(ex$data, bads = ex$info$bads))
-
-})
 
 test_that("remove_rows works", {
 
   test <- data.frame(samp_num = 0:100,
-                     value = 0:100)
+                     value = 0:100)|>setDT()
 
   removed = c(3,4,5,6)
 
@@ -68,16 +81,20 @@ test_that("remove_rows works", {
   test2 <- data.frame(samp_num = 0:100,
                       value = 0:100)
 
+  expect_dt <- test |>setDT() |>setindex("samp_num")
 
-  expect_equal(test,
-               remove_rows(test2, removed))
+
+  expect_equal(expect_dt,
+               remove_rows(test2, removed, ref_col = "samp_num",
+                           value_col = "value"))
 
   removed = c()
 
   test <- data.frame(samp_num = 0:100,
-                     value = 0:100)
+                     value = 0:100) |>setDT()
 
-  expect_equal(test, remove_rows(test, removed))
+  expect_equal(test, remove_rows(test, removed,ref_col = "samp_num",
+                                 value_col = "value"))
 })
 
 test_that("adjust_times works", {
@@ -93,7 +110,7 @@ test_that("adjust_times works", {
 
   test <- data |>
     dplyr::mutate(Time = samp_num /sfreq,
-                  ZeroedTime = Time - meas_start)
+                  ZeroedTime = Time - meas_start) |>setDT()
 
   expect_equal(test, adjust_times(data, sfreq, meas_start, "samp_num"))
 })

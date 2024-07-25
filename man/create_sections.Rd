@@ -4,10 +4,10 @@
 \alias{create_sections}
 \title{Create on/off Kinetics sections}
 \usage{
-create_sections(data)
+create_sections(dt)
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
 }
 \value{
 data.frame

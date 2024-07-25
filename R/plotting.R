@@ -64,7 +64,7 @@ ggook <- function(data, x, y){
    return(plt + scale_x_continuous(breaks = seq(0,960,120)))
  }
 
- bk <- major_breaks[which(dplyr::between(major_breaks, x[1], x[2]))]
+ bk <- major_breaks[which(between(major_breaks, x[1], x[2]))]
  vlines <- lapply(bk, function(x) geom_vline(xintercept = x))
 
  plt <- lapply(vlines, function(x) plt + x)

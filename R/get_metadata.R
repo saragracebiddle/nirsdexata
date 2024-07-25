@@ -161,7 +161,7 @@ get_labels <- function(longname){
 
 #' Get channel types from column names
 #'
-#' @param longname
+#' @param longname character string
 #'
 #' @return ch_type
 #' @export

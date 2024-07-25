@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{meas_date}
 \alias{meas_date}
-\title{Acessor for `meas_date`}
+\title{Acessor for \code{meas_date}}
 \usage{
 meas_date(x)
 
@@ -12,12 +12,12 @@ meas_date(x)
 \item{x}{object}
 }
 \value{
-value if `meas_date` exists in the object, NULL otherwise
+value if \code{meas_date} exists in the object, NULL otherwise
 
-value if `meas_date` exists in the object, NULL otherwise
+value if \code{meas_date} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `meas_date`
+Acessor for \code{meas_date}
 
-Acessor for `meas_date`
+Acessor for \code{meas_date}
 }

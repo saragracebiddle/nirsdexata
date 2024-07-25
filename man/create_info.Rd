@@ -7,7 +7,6 @@
 create_info(
   col_names = character(),
   col_types = "misc",
-  col_info = NULL,
   device_type = NULL,
   device_model = NULL,
   device_serial = NULL,
@@ -74,18 +73,18 @@ Info object containing all provided parameters. The Info object
 inherits from list, so will behave as a list.
 }
 \description{
-Create `info` object to record measurement metadata. This object behaves
+Create \code{info} object to record measurement metadata. This object behaves
 like a list. It contains all metadata available for the measurement.
-The only required input is `col_names`. Even if `col_names` is the only
-user-supplied input, the `info` object will have empty slots for all possible
+The only required input is \code{col_names}. Even if \code{col_names} is the only
+user-supplied input, the \code{info} object will have empty slots for all possible
 values.
 }
 \details{
 Implementation is based on the info class for MNE python.
 
- `col_names`is the only required argument. `col_types` defaults to "misc"
-for all cols without other input. If both `col_names` and `col_types` are
-provided, the length of `col_names` must match the length of `col_types` if
-`col_types` is longer than 1. If `col_types` is of length 1, then all cols
+\code{col_names}is the only required argument. \code{col_types} defaults to "misc"
+for all cols without other input. If both \code{col_names} and \code{col_types} are
+provided, the length of \code{col_names} must match the length of \code{col_types} if
+\code{col_types} is longer than 1. If \code{col_types} is of length 1, then all cols
 will be that type.
 }

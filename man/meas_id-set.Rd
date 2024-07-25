@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{meas_id<-}
 \alias{meas_id<-}
-\title{Set the value of `meas_id`}
+\title{Set the value of \code{meas_id}}
 \usage{
 meas_id(x) <- value
 }
@@ -15,5 +15,5 @@ meas_id(x) <- value
 modified object
 }
 \description{
-Set the value of `meas_id`
+Set the value of \code{meas_id}
 }

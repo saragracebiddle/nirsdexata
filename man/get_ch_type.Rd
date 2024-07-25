@@ -7,7 +7,7 @@
 get_ch_type(longname)
 }
 \arguments{
-\item{longname}{}
+\item{longname}{character string}
 }
 \value{
 ch_type

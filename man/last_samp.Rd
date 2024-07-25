@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{last_samp}
 \alias{last_samp}
-\title{Accessor for `last_samp`}
+\title{Accessor for \code{last_samp}}
 \usage{
 last_samp(x)
 }
@@ -10,8 +10,8 @@ last_samp(x)
 \item{x}{object}
 }
 \value{
-value of `last_samp`
+value of \code{last_samp}
 }
 \description{
-Accessor for `last_samp`
+Accessor for \code{last_samp}
 }

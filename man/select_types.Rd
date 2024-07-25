@@ -4,10 +4,10 @@
 \alias{select_types}
 \title{Filter by selected column type/s}
 \usage{
-select_types(data, type = NULL)
+select_types(dt, type = NULL)
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
 
 \item{type}{character vector of column type to include.}
 }

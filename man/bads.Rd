@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{bads}
 \alias{bads}
-\title{Acessor for `bads`}
+\title{Acessor for \code{bads}}
 \usage{
 bads(x)
 }
@@ -10,8 +10,8 @@ bads(x)
 \item{x}{object}
 }
 \value{
-value if `bads` exists in the object, NULL otherwise
+value if \code{bads} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `bads`
+Acessor for \code{bads}
 }

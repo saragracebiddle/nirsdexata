@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{meas_date<-}
 \alias{meas_date<-}
-\title{Set the value of `meas_date`}
+\title{Set the value of \code{meas_date}}
 \usage{
 meas_date(x) <- value
 
@@ -19,7 +19,7 @@ modified object
 modified object
 }
 \description{
-Set the value of `meas_date`
+Set the value of \code{meas_date}
 
-Set the value of `meas_date`
+Set the value of \code{meas_date}
 }

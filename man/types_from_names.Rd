@@ -4,10 +4,14 @@
 \alias{types_from_names}
 \title{Label On/Off Kinetics Sections}
 \usage{
-types_from_names(data, col_types, col_names)
+types_from_names(
+  dt = data.frame(),
+  col_types = character(),
+  col_names = character()
+)
 }
 \arguments{
-\item{data}{data.frame}
+\item{dt}{data.frame}
 
 \item{col_types}{character vector of col_types}
 

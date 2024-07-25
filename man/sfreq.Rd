@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{sfreq}
 \alias{sfreq}
-\title{Acessor for `sfreq`}
+\title{Acessor for \code{sfreq}}
 \usage{
 sfreq(x)
 }
@@ -10,8 +10,8 @@ sfreq(x)
 \item{x}{object}
 }
 \value{
-value if `sfreq` exists in the object, NULL otherwise
+value if \code{sfreq} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `sfreq`
+Acessor for \code{sfreq}
 }

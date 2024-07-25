@@ -4,10 +4,12 @@
 \alias{steady_states}
 \title{Calculate steady state values}
 \usage{
-steady_states(data, width = 30)
+steady_states(dt, width = 30)
 }
 \arguments{
-\item{data}{data.frame returned from `prepare_for_modeling()`}
+\item{dt}{data.frame returned from \code{prepare_for_modeling()}}
+
+\item{width}{A double, number of seconds}
 }
 \value{
 data.table

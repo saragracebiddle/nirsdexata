@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_sex}
 \alias{subj_sex}
-\title{Acessor for `subj_sex`}
+\title{Acessor for \code{subj_sex}}
 \usage{
 subj_sex(x)
 }
@@ -10,8 +10,8 @@ subj_sex(x)
 \item{x}{object}
 }
 \value{
-value if `subj_sex` exists in the object, NULL otherwise
+value if \code{subj_sex} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `subj_sex`
+Acessor for \code{subj_sex}
 }

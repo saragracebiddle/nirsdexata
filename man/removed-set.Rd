@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{removed<-}
 \alias{removed<-}
-\title{Set the value of `removed`}
+\title{Set the value of \code{removed}}
 \usage{
 removed(x) <- value
 }
@@ -15,5 +15,5 @@ removed(x) <- value
 modified object
 }
 \description{
-Set the value of `removed`
+Set the value of \code{removed}
 }

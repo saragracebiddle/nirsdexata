@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{subj_weight<-}
 \alias{subj_weight<-}
-\title{Set the value of `subj_weight`}
+\title{Set the value of \code{subj_weight}}
 \usage{
 subj_weight(x) <- value
 }
@@ -15,5 +15,5 @@ subj_weight(x) <- value
 modified object
 }
 \description{
-Set the value of `subj_weight`
+Set the value of \code{subj_weight}
 }

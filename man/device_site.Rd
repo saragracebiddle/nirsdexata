@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{device_site}
 \alias{device_site}
-\title{Acessor for `device_site`}
+\title{Acessor for \code{device_site}}
 \usage{
 device_site(x)
 }
@@ -10,8 +10,8 @@ device_site(x)
 \item{x}{object}
 }
 \value{
-value if `device_site` exists in the object, NULL otherwise
+value if \code{device_site} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `device_site`
+Acessor for \code{device_site}
 }

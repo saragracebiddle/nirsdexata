@@ -2,18 +2,18 @@
 % Please edit documentation in R/generics.R
 \name{meas_start<-}
 \alias{meas_start<-}
-\title{Setter for `meas_start`}
+\title{Setter for \code{meas_start}}
 \usage{
 meas_start(x) <- value
 }
 \arguments{
 \item{x}{object}
 
-\item{value}{value to set as `meas_start`}
+\item{value}{value to set as \code{meas_start}}
 }
 \value{
-modified object if `meas_start` exists, otherwise NULL
+modified object if \code{meas_start} exists, otherwise NULL
 }
 \description{
-Setter for `meas_start`
+Setter for \code{meas_start}
 }

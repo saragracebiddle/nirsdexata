@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{meas_end<-}
 \alias{meas_end<-}
-\title{Set the value of `meas_end`}
+\title{Set the value of \code{meas_end}}
 \usage{
 meas_end(x) <- value
 }
@@ -15,5 +15,5 @@ meas_end(x) <- value
 modified object
 }
 \description{
-Set the value of `meas_end`
+Set the value of \code{meas_end}
 }

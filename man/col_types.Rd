@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R
 \name{col_types}
 \alias{col_types}
-\title{Acessor for `col_types`}
+\title{Acessor for \code{col_types}}
 \usage{
 col_types(x)
 }
@@ -10,8 +10,8 @@ col_types(x)
 \item{x}{object}
 }
 \value{
-value if `col_types` exists in the object, NULL otherwise
+value if \code{col_types} exists in the object, NULL otherwise
 }
 \description{
-Acessor for `col_types`
+Acessor for \code{col_types}
 }

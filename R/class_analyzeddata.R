@@ -31,8 +31,7 @@ analysis <- function(rawdata){
 
   prep = prepare_for_modeling(rawdata) |> setDT()
 
-  prep2 <- prep |>
-    dplyr::filter(Section != "BegRest" & Section != "WarmUp")
+  prep2 <- prep[Section != "BegRest" & Section != "WarmUp", ]
 
   nested <- group_nest_dt(prep2, Section, col_type)|>
     setkey(Section, col_type)
@@ -40,8 +39,8 @@ analysis <- function(rawdata){
   asym_models = nested[, Model := map(data, asym_model)
   ][ is.na(Model) == FALSE,
                       `:=` (
-                        Tidy = map(Model, tidy),
-                        Augment = map(Model, augment)
+                        Tidy = map(Model, broom::tidy),
+                        Augment = map(Model, broom::augment)
                       ) , ]
 
   steadystates <- steady_states(prep2)
@@ -66,14 +65,14 @@ analysis <- function(rawdata){
     dplyr::select(Section, col_type, SectionZeroedTime, predicted, residual)
 
 
-  data <- merge(prep,
+  dt <- merge(prep,
                 augment,
                 by = c("Section", "col_type", "SectionZeroedTime"),
                 all.x = TRUE)
 
 
   # TODO get steady states and add those into the results
-  new_analyzed_data(data,
+  new_analyzed_data(dt,
                     rawdata$info,
                     coefs)
 
