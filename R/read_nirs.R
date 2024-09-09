@@ -59,8 +59,8 @@ read_nirs.txt <- function(file, ...,  delim = NULL){
   legendinfo <- get_metadata(s, type = "legend")
   export_type = legendinfo[["export_type"]]
   legend = legendinfo[["cols"]]
-  meas_date <- get_metadata(s, type = "meas_date") |>
-    lubridate::parse_date_time("%Y-%m-%d %H:%M:%OS")
+  meas_date <- get_metadata(s, type = "meas_date")
+
   serialnum <- get_metadata(s, type = "serial")
   wavelengths <- get_metadata(s, type = "wavelengths")
 

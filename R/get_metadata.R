@@ -21,24 +21,32 @@ get_metadata <- function(s, type){
 
 
   if(type == "legend"){
-
-    # find index for the start of the legend in the list s
-    # throw error if it can't be found
-    legendstart = stringr::str_which(s, "Legend")
-    if(length(legendstart) <1){
-      error_file_metadata("legend")
-    }
-
-
+    # determine whether data was exported as haemoglobin
+    # or optical densities
+    # as this affects the column names
     if(length(stringr::str_which(s, "Trace")) > 0){
       legendtype = "haemoglobin"
     } else {
       legendtype = "optical_density"
     }
+    
+    # find index for the start of the legend in the list s
+    # throw error if it can't be found
+    if(legendtype == "haemoglobin"){
+      legendstart = stringr::str_which(s, "Trace")
+      if(length(legendstart) <1){
+        error_file_metadata("legend")
+      }
+    }else{
+      legendstart = stringr::str_which(s, "Legend")
+      if(length(legendstart) <1){
+        error_file_metadata("legend")
+      }
+    }
 
     # find index for the end of the legend in the list s
     # throw error if it can't be found
-    legendend = stringr::str_which(s[(legendstart + 3):length(s)], "Event")
+    legendend = stringr::str_which(s[(legendstart):length(s)], "Event") -3
     if(length(legendend) < 1){
       error_file_metadata("legend")
     }
@@ -46,7 +54,7 @@ get_metadata <- function(s, type){
     # get the legend entries from the list
     # start at legendstart + 1 because the Trace is not a legend item
     # end at legendstart + legendend - 1
-    p = s[(legendstart + 3):(legendstart + legendend)]
+    p = s[(legendstart + 1):(legendstart + legendend)]
 
 
     # put into a 2 column data frame
@@ -102,16 +110,31 @@ get_metadata <- function(s, type){
 
     # retrieve value from list s
     out <- s[i + mtdt[mtdt$types == type,]$addi]
+    
 
     # return value as respective datatype
     if(type == "num_samples"){
       as.integer(out)
     } else if (type == "hz"){
       as.double(out)
+    } else if (type == "meas_date"){
+      out <- tryCatch({
+        lubridate::parse_date_time(out, "%Y-%m-%d %H:%M:%OS")
+        },
+        error = function(cnd){
+          out
+        },
+        warning = function(cnd){
+          out
+        })
+      
+      out
     } else{
       out
     }
-  }
+  
+    
+    }
 }
 
 #' Get participant ID from the file name

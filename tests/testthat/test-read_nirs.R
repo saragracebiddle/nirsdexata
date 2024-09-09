@@ -27,3 +27,9 @@ test_that("read_nirs makes correct columns", {
                  "TSI",
                  "TSIFF"), colnames(ex2$data))
 })
+
+test_that("read_nirs works with lightshield data",{
+          expect_no_condition(
+            read_nirs(read_nirs_example("ltshld_onoff.txt"))
+            )
+})
